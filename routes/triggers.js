@@ -81,7 +81,6 @@ router.get('/:listId/:segmentId/create', passport.csrfProtection, (req, res, nex
     });
 
     data.csrfToken = req.csrfToken();
-    data.days = Math.max(Number(data.days) || 1, 1);
 
     lists.get(listId, (err, list) => {
         if (err || !list) {
@@ -173,7 +172,6 @@ router.get('/edit/:id', passport.csrfProtection, (req, res, next) => {
             return res.redirect('/campaigns');
         }
         trigger.csrfToken = req.csrfToken();
-        trigger.days = Math.round(trigger.seconds / (24 * 3600));
 
         lists.get(trigger.list, (err, list) => {
             if (err || !list) {
