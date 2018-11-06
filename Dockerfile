@@ -1,6 +1,8 @@
 FROM node:8.6
 
 # First install dependencies
+RUN apt update
+RUN apt install vim -y
 COPY ./package.json ./app/
 WORKDIR /app/
 ENV NODE_ENV production
