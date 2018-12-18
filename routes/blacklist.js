@@ -45,7 +45,8 @@ router.post('/ajax/', (req, res) => {
 
 router.post('/ajax/add', passport.csrfProtection, (req, res) => {
     let email = req.body.email;
-    blacklist.add(email, (err) => {
+    let emailSplit = email.split('\r').map(email => email.trim());
+    blacklist.add(emailSplit, (err) => {
         if (err) {
             req.flash('danger', err.message || err);
             return res.redirect(req.body.next);
@@ -57,6 +58,18 @@ router.post('/ajax/add', passport.csrfProtection, (req, res) => {
 router.post('/ajax/delete', passport.csrfProtection, (req, res) => {
     let email = req.body.email;
     blacklist.delete(email, (err) => {
+        if (err) {
+            req.flash('danger', err.message || err);
+            return res.redirect(req.body.next);
+        }
+        return res.redirect(req.body.next);
+    });
+});
+
+router.post('/ajax/massDelete', passport.csrfProtection, (req, res) => {
+    let email = req.body.email;
+    let emailSplit = email.split('\r').map(email => email.trim());
+    blacklist.massDelete(emailSplit, (err) => {
         if (err) {
             req.flash('danger', err.message || err);
             return res.redirect(req.body.next);
